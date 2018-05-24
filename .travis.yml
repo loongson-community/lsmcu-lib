@@ -1,0 +1,17 @@
+language: c
+
+compiler:
+    - gcc
+
+sudo: false
+dist: trusty
+
+
+before_script:
+    - wget http://codescape.mips.com/components/toolchain/2017.10-07/Codescape.GNU.Tools.Package.2017.10-07.for.MIPS.MTI.Bare.Metal.CentOS-5.x86_64.tar.gz
+    - tar xvf Codescape.GNU.Tools.Package.2017.10-07.for.MIPS.MTI.Bare.Metal.CentOS-5.x86_64.tar.gz
+    - export PATH=$PATH:$PWD/mips-mti-elf/2017.10-07/bin
+
+script:
+    - make all
+

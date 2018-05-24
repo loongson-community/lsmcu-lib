@@ -1,4 +1,4 @@
-# LSmcu-lib
+# LSmcu-lib [![Build Status](https://travis-ci.org/loongson-community/lsmcu-lib.svg?branch=master)](https://travis-ci.org/loongson-community/lsmcu-lib)
 龙芯 1C300 裸机编程库
 
 ## 编程&使用方法
