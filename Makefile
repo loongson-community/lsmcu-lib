@@ -1,9 +1,9 @@
 
 # 虚拟机里的交叉编译工具链
-#CROSS_COMPILE 	=mipsel-linux-
+#CROSS_COMPILE 	=mips-mti-elf-
 #COPY   = cp
 # windows下的交叉编译工具链
-CROSS_COMPILE 	=mips-linux-gnu-
+CROSS_COMPILE 	=mips-mti-elf-
 COPY    = copy
 
 #
@@ -35,10 +35,11 @@ VPATH += include
 LIBS = 
 
 #编译参数
-CCFLAGS = -mno-abicalls -fno-pic -g -Wall -Wstrict-prototypes -Wno-uninitialized -Wno-format -Wno-main -O2 -G 0 -mips2 -fno-builtin -nostdinc
-AFLAGS  = -mno-abicalls -fno-pic -G 0 -mips2 -Wall -mno-abicalls -fno-builtin
+DEVFLAGS = -mips32 -mfp32 -EL
+CCFLAGS = $(DEVFLAGS) -mno-abicalls -fno-pic -g -Wall -Wstrict-prototypes -Wno-uninitialized -Wno-format -Wno-main -O2 -G 0 -fno-builtin -nostdinc -fgnu89-inline
+AFLAGS  = $(DEVFLAGS) -mno-abicalls -fno-pic -G 0 -Wall -mno-abicalls -fno-builtin  -D__ASSEMBLY__
 #链接参数
-LDFLAGS = -m elf32ltsmip -G 0 -static -n -nostdlib -N
+LDFLAGS = $(DEVFLAGS) -m elf32ltsmip -G 0 -static -n -nostdlib -N
 
 # 最终的目标文件
 OUTPUT_ELF = OpenLoongsonLib1c.elf

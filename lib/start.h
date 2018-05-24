@@ -1,10 +1,61 @@
-
-
 #ifndef __OPENLOONGSON_START_H
 #define __OPENLOONGSON_START_H
 
 
-// 串口各寄存器相对基地址的偏移
+#define CP0_CONFIG $16
+#define CP0_TAGLO  $28
+#define CP0_TAGHI  $29
+
+
+/* SDRAM PARAM macro */
+#define	SD_FREQ	(((APB_CLK / 4) * (PLL_MULT / CPU_DIV)) / SDRAM_PARAM_DIV_NUM)
+
+
+/* SDRAM ROW */
+#define	ROW_1K		0x7
+#define	ROW_2K		0x0
+#define	ROW_4K		0x1
+#define	ROW_8K		0x2
+#define	ROW_16K		0x3
+/* SDRAM COL */
+#define	COL_256		0x7
+#define	COL_512		0x0
+#define	COL_1K		0x1
+#define	COL_2K		0x2
+#define	COL_4K		0x3
+/* SDRAM WIDTH */
+#define	WIDTH_8		0x0
+#define	WIDTH_16	0x1
+#define	WIDTH_32	0x2
+
+#define	TRCD		3
+#define	TCL			3
+#define	TRP			3
+#define	TRFC		8
+#define	TRAS		6
+#define	TREF		0x818
+#define	TWR			2
+
+#define	DEF_SEL		0x1
+#define	DEF_SEL_N	0x0
+#define	HANG_UP		0x1
+#define	HANG_UP_N	0x0
+#define	CFG_VALID	0x1
+
+#include "start_config.h"
+
+#define	SD_PARA0	(0x7f<<25 | \
+					(TRAS << 21) | \
+					(TRFC << 17) | (TRP << 14) | (TCL << 11) | \
+					(TRCD << 8) | (SDRAM_WIDTH << 6) | (SDRAM_COL << 3) | \
+					SDRAM_ROW)
+
+#define	SD_PARA1	((HANG_UP_N << 8) | (DEF_SEL_N << 7) | (TWR << 5) | (TREF >> 7))
+
+#define	SD_PARA1_EN	((CFG_VALID << 9) | (HANG_UP_N << 8) | \
+					(DEF_SEL_N << 7) | (TWR << 5) | (TREF >> 7))
+
+/* UART register offset*/
 #define LS1C_UART_DAT_OFFSET            (0)
 #define LS1C_UART_IER_OFFSET            (1)
 #define LS1C_UART_IIR_OFFSET            (2)
@@ -14,14 +65,14 @@
 #define LS1C_UART_LSR_OFFSET            (5)
 #define LS1C_UART_MSR_OFFSET            (6)
 
-#define LS1C_UART_LSB_OFFSET            (0)     // 分频锁存器1
-#define LS1C_UART_MSB_OFFSET            (1)     // 分频锁存器2
+#define LS1C_UART_LSB_OFFSET            (0)
+#define LS1C_UART_MSB_OFFSET            (1)
 
 /* interrupt enable register */
-#define	IER_IRxE	0x1	/* 接收有效数据中断使能 */
-#define	IER_ITxE	0x2	/* 传输保存寄存器为空中断使能 */
-#define	IER_ILE	    0x4	/* 接收器线路状态中断使能 */
-#define	IER_IME	    0x8	/* Modem状态中断使能 */
+#define	IER_IRxE	0x1
+#define	IER_ITxE	0x2
+#define	IER_ILE	    0x4
+#define	IER_IME	    0x8
 
 /* interrupt identification register */
 #define	IIR_IMASK	0xf	/* mask */
@@ -43,7 +94,6 @@
 #define	FIFO_TRIGGER_8	0x80	/* trigger at 8 chars */
 #define	FIFO_TRIGGER_14	0xc0	/* trigger at 14 chars */
 
-// 线路控制寄存器
 /* character format control register */
 #define	CFCR_DLAB	0x80	/* divisor latch */
 #define	CFCR_SBREAK	0x40	/* send break */
@@ -77,46 +127,20 @@
 #define	LSR_RCV_MASK	0x1f
 
 
-// 波特率
-#define B0      0
-#define B50     50      
-#define B75     75
-#define B110    110
-#define B134    134
-#define B150    150
-#define B200    200
-#define B300    300
-#define B600    600
-#define B1200   1200
-#define B1800   1800
-#define B2400   2400
-#define B4800   4800
-#define B9600   9600
-#define B19200  19200
-#define B38400  38400
-#define B57600  57600
-#define B115200 115200
-#define B230400 230400
-#define B380400 380400
-#define B460800 460800
-#define B921600 921600
-
-
-
-// 晶振的频率
+/* External clock frequency */
 #define AHB_CLK                 (24000000)
 #define APB_CLK                 (AHB_CLK)
 
 
-// START_FREQ寄存器bits
+/* START_FREQ register bits */
 #define M_PLL_SHIFT             (8)
-#define M_PLL                   (0xff << M_PLL_SHIFT)       // PLL倍频系数的整数部分
+#define M_PLL                   (0xff << M_PLL_SHIFT)
 #define FRAC_N_SHIFT            (16)
-#define FRAC_N                  (0xff << FRAC_N_SHIFT)      // PLL倍频系数的小数部分
+#define FRAC_N                  (0xff << FRAC_N_SHIFT)
 #define DIV_SDRAM_SHIFT         (0)
 #define DIV_SDRAM               (0x3  << DIV_SDRAM_SHIFT)
 
-// CLK_DIV_PARAM寄存器bits
+/* CLK_DIV_PARAM register bits */
 #define DIV_PIX_EN              (0x1  << 31)
 #define DIV_PIX                 (0x7f << 24)
 #define DIV_CAM_EN              (0x1  << 23)
@@ -134,6 +158,4 @@
 #define DIV_CAM_SHIFT           (16)
 #define DIV_CPU_SHIFT           (8)
 
-
 #endif
-

@@ -144,7 +144,7 @@ int vsprintf (char *d, const char *s, va_list ap)
 						base = 8;
 					else if (*s == 'b')
 						base = 2;
-#ifdef HAVE_QUAD
+#if 0
 					if (longlong)
 						llbtoa(d, va_arg (ap, quad_t),
 						    base);
